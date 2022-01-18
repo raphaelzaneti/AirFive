@@ -12,6 +12,7 @@ public class FlightsInterface {
     static String CPF[] = new String[4]; //guarda o RG do passageiro
     static int disp[] = new int[3]; //armazena a qtd de lugares
     static boolean vazio[] = new boolean[3]; //indica se a posição está vazia
+    static boolean reservado[] = new boolean[3]; //indica se o voo está reservado pelo usuário 
     static int qtdLugares[] = new int[3]; //guarda o a qtd de lugares de cada voo
     static int i = 0, j = 0;; //variavel usada nos laços
         
@@ -19,7 +20,8 @@ public class FlightsInterface {
         int menuVoo = 0; //menu do voo
         int menuPrincipal = 0; //menu principal
         int codVoo = 100; //codigo do voo    
-      
+        CadastrarVoo();
+        
       //posição  vazia
         for (i = 0; i < ciaAerea.length; i++) {
             vazio[i] = false;
@@ -102,6 +104,7 @@ public class FlightsInterface {
         linhaAerea[0] = "Rio de Janeiro -> São Paulo";
         disp[0] = 10;
         vazio[0] = true;
+        reservado[0] = false;
         qtdLugares[0] = 20;
 
         numeroVoo[1] = "002";
@@ -109,6 +112,7 @@ public class FlightsInterface {
         linhaAerea[1] = "Rio de Janeiro -> Brasília";
         disp[1] = 8;
         vazio[1] = true;
+        reservado[1] = false;
         qtdLugares[1] = 9;
        
         numeroVoo[2] = "003";
@@ -116,6 +120,7 @@ public class FlightsInterface {
         linhaAerea[2] = "Rio de Janeiro -> Belo Horizonte";
         disp[2] = 20;
         vazio[2] = true;
+        reservado[2] = false;
         qtdLugares[2] = 6;
     } 
     
@@ -147,6 +152,7 @@ public class FlightsInterface {
             System.out.printf("Reserva confirmada para %s no voo %s da Empresa %s\n\n",
                     CPF[codV - 1], numeroVoo[codV - 1], ciaAerea[codV - 1]);
            
+            reservado[codV - 1] = true;
             CPF[codV - 1]=""; 
         } else {
             System.out.println("--------------------------------------------------------------\n"
@@ -170,15 +176,22 @@ public class FlightsInterface {
     //cancelar reserva
     public static void CancelarReserva(int codV) {
         if (disp[codV - 1] < qtdLugares[codV - 1]) {
-                CPF[codV - 1] = ler.next();
-           
-                //atualiza a disponibilidade de lugares
-                disp[codV - 1] += 1;
+                
+        		if(reservado[codV -1]==true) {	
+	        		CPF[codV - 1] = ler.next();
+	           
+	                //atualiza a disponibilidade de lugares
+	                disp[codV - 1] += 1;
+	                reservado[codV -1] = false;
+
+	                System.out.println("Operação realizada com sucesso!");
+	        	} else {
+	                System.out.println("Não ha reserva para este voo");
+	            }
            
         } else {
             System.out.println("Não ha reserva para este voo");
         }
-        System.out.println("Operação realizada com sucesso!");
     }
 
 }
